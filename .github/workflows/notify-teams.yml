@@ -6,18 +6,40 @@ on:
       - main  # Trigger on push to the main branch (modify as needed)
 
 jobs:
-  notify:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Send notification to Microsoft Teams
+      # Add your build or test steps here
+      - name: Run Build or Tests
+        run: |
+          #echo "Running build or tests..."
+          # Simulating a command that could fail (remove this line if you have actual commands)
+          exit 1  # Simulate a failure (change to `exit 0` for success)
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: build  # The 'notify' job depends on the 'build' job
+
+    steps:
+      - name: Send notification to Microsoft Teams (Success)
+        if: success()  # Only run this step if the 'build' job is successful
         run: |
           curl -H "Content-Type: application/json" \
                -d '{
-                     "text": "A new commit has been pushed to the main branch in the repository: ${GITHUB_REPOSITORY}. Commit message: ${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}."
+                     "text": "The build job has **succeeded** in the repository: '${{ github.repository }}'. Commit message: '${{ github.event.head_commit.message }}'."
                    }' \
                ${{ secrets.MSTEAMS_WEBHOOK_URL }}
-        env:
-          MSTEAMS_WEBHOOK_URL: ${{ secrets.MSTEAMS_WEBHOOK_URL }}
+
+      - name: Send notification to Microsoft Teams (Failure)
+        if: failure()  # Only run this step if the 'build' job fails
+        run: |
+          curl -H "Content-Type: application/json" \
+               -d '{
+                     "text": "The build job has **failed** in the repository: '${{ github.repository }}'. Commit message: '${{ github.event.head_commit.message }}'."
+                   }' \
+               ${{ secrets.MSTEAMS_WEBHOOK_URL }}
+

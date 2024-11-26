@@ -18,6 +18,6 @@ jobs:
                -d '{
                      "text": "A new commit has been pushed to the main branch in the repository: ${GITHUB_REPOSITORY}. Commit message: ${GITHUB_EVENT_HEAD_COMMIT_MESSAGE}."
                    }' \
-               ${SECRETS.MSTEAMS_WEBHOOK_URL}
+               ${secrets.MSTEAMS_WEBHOOK_URL}
         env:
           MSTEAMS_WEBHOOK_URL: ${{ secrets.MSTEAMS_WEBHOOK_URL }}

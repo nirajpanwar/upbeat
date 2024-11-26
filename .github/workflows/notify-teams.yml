@@ -23,7 +23,7 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     needs: build  # The 'notify' job depends on the 'build' job
-    continue-on-error: true
+    if: always() 
 
     steps:
       - name: Send notification to Microsoft Teams (Success)

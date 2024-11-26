@@ -30,9 +30,9 @@ jobs:
         if: success()  # Only run this step if the 'build' job is successful
         run: |
           curl -H "Content-Type: application/json" \
-               -d '{
-                     "text": "The build job has **succeeded** in the repository: '${{ github.repository }}'. Commit message: '${{ github.event.head_commit.message }}'."
-                   }' \
+               -d '{ \
+                     "text\": "The build job has **succeeded** in the repository: '${{ github.repository }}'. Commit message: '${{ github.event.head_commit.message }}'."
+                   \}' \
                ${{ secrets.MSTEAMS_WEBHOOK_URL }}
 
       - name: Send notification to Microsoft Teams (Failure)

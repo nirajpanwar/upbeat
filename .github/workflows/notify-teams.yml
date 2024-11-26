@@ -27,14 +27,14 @@ jobs:
 
     steps:
       - name: Send notification to Microsoft Teams (Success)
-        if: success()  # Only run this step if the 'build' job is successful
+        if: ${{ needs.build.result == 'success' }}   # Only run this step if the 'build' job is successful
         run: |
           curl -H "Content-Type: application/json" \
                -d "{\"text\": \"The build job has **succeeded** in the repository: ${{ github.repository }}. Commit message: ${{ github.event.head_commit.message }}.\"}" \
                ${{ secrets.MSTEAMS_WEBHOOK_URL }}
 
       - name: Send notification to Microsoft Teams (Failure)
-        if: failure()  # Only run this step if the 'build' job fails
+        if: ${{ needs.build.result == 'failure' }}  # Only run this step if the 'build' job fails
         run: |
           curl -H "Content-Type: application/json" \
                -d "{\"text\": \"The build job has **failed** in the repository: ${{ github.repository }}. Commit message: ${{ github.event.head_commit.message }}.\"}" \

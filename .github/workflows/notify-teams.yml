@@ -3,7 +3,7 @@ name: Notify Teams on Push
 on:
   push:
     branches:
-      - main  # Trigger on push to the main branch (modify as needed)
+      - 0273main  # Trigger on push to the main branch (modify as needed)
 
 jobs:
   build:
